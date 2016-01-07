@@ -46,7 +46,7 @@ MORE RESOURCES
 
  - PHP + MySQL w3 - http://www.w3schools.com/php/php_mysql_connect.asp
 
- - 
+ - MYSQL - adding new mySQL user & permissions
 
 	----
 
@@ -81,7 +81,9 @@ MORE RESOURCES
 	----
 
 
+we were able to connect the php to the database, as well as creating a new registered user, except, I do not know how to validate (via email) the new user. email functionality isn't working as it is not setup.
 
+someone suggested on the tutorial to use php's native functionality - let's see what that is about
 
 
 
