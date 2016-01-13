@@ -17,6 +17,9 @@ if( $user->is_logged_in() ) {
 //if form has been submitted process it
 if(isset($_POST['submit'])){
 
+	// very basic validation
+
+	// for username first
 	if(strlen($_POST['username']) < 3) {
 		$error[] = 'Username is too short';
 	} else {
@@ -25,14 +28,80 @@ if(isset($_POST['submit'])){
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if(!empty($row[username])){
-			
+			$error[] = 'Username is already in use.';
 		}
 	}
 
+	// then for password
+	if(strlen($_POST['password']) < 3){
+		$error[] = 'Password is too short.';
+	}
+	// then for passwordConfirm
+	if(strlen($_POST['passwordConfirm']) < 3){
+		$error[] = 'Confirm password is too short.';
+	}
+	// then password vs passwordConfirm
+	if(strlen($_POST['password'] != $_POST['passwordConfirm']){
+		$error[] = 'Password do not match.';
+	}
+
+	// email validation
+	if(!filter_var($_POST['email', FILTER_VALIDATE_EMAIL])){
+		$error[] = 'Please enter a valid email address';
+	} else {
+		$stmt = $db->prepare('SELECT email FROM members WHERE email = :email');
+		$stmt->execute(array(':email' => $_POST['email']));
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if (!empty($row['email'])){
+			$error[] = 'Email provided is already in use.';
+		}
+	}
+
+	// if no errors have been created then carry on
+		if(!isset($error)){
+
+			// hash the error
+			$hashedpassword = $user->password($_POST['password'], PASSWORD_BCRYPT);
+
+			// create activation code
+			$activasion = md5(uniqid(rand(),true));
+
+		}
+
+			// try is supposed to be here
+
+			// insert into database with a prepared statement
+			$stmt = $db->prepare('INSERT INTO members (username,password,email,active) VALUES (:username, :password, :email, :active)');
+			$stml->execute(array(
+					':username' => $_POST['username'],
+					':password' => $_hashedpassword,
+					':email' => $_POST['email'],
+					':active' => $activasion
+				));
+			$id = $db->lastInsertId('memberID');
+
+			// send email
+			$to = $_POST['email'];
+			$subject = "Registration Confirmation";
+			$body = "<p>Thank you for registering at demo site.</p>
+				<p>To activate your account, please click on this link: <a href='".DIR."activate.php?x=$id&y=$activasion'></a></p>
+				<p>Regards Site Admin</p>";
+
+			$mail = new Mail();
+			$mail->setFrom(SITEEMAIL);
+			$mail->addAddress($to);
+			$mail->subject($subject);
+			$mail->body($body);
+			$mail->send();
+
+			// redirect to index page
+			header('Location: index.php?action=joined');
+			exit;
+
+
 }
 
-	//very basic validation
-	//email validation
 	//if no errors have been created carry on
 		//hash the password
 		//create the activasion code

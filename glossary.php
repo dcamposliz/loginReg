@@ -27,4 +27,8 @@
 	// Fetches a row from a result set associated with a PDOStatement object.
 	// The fetch_style parameter determines how PDO returns the row.
 
+// password hashing
+	// http://php.net/manual/en/faq.passwords.php
+
+
 

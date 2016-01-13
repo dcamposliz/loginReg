@@ -89,4 +89,10 @@ __
 
 currently back to index.php on loginReg :)
 
+__
+
+read the notes for everything up to the end of index.php
+
+
+
 
