@@ -14,18 +14,47 @@ if( $user->is_logged_in() ) {
 
 
 
+//if form has been submitted process it
+if(isset($_POST['submit'])){
+
+	if(strlen($_POST['username']) < 3) {
+		$error[] = 'Username is too short';
+	} else {
+		$stmt = $db->prepare('SELECT username FROM members WHERE username = :username');
+		$stmt->execute(array(':username' => $_POST['username']));
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if(!empty($row[username])){
+			
+		}
+	}
+
+}
+
+	//very basic validation
+	//email validation
+	//if no errors have been created carry on
+		//hash the password
+		//create the activasion code
+			//insert into database with a prepared statement
+			//send email
+			//redirect to index page
+		//else catch the exception and show the error.
+
+
 //define page title
 $title = 'Demo';
 
 //include header template
 require('layout/header.php');
+
 ?>	
 
 <?php
 //check for any errors
 if(isset($error)){
 	foreach($error as $error){
-		echo '<p class="bg-danger">'.$error.'</p>'
+		echo '<p class="bg-danger">'.$error.'</p>';
 	}
 }
 
@@ -34,9 +63,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'joined'){
 	echo "<h2 class='bg-success'>Registration successful, please check your email to activate your account.</h2>";
 }
 ?>
-
-
-
 
 <!-- 
 	for new registrations, display a form consisting of
@@ -47,12 +73,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'joined'){
 
 	<!-- usename input -->
 	<div class="form-group">
-		<input type="text" name="username" id="username" class="form-control input-lg" placeholder="User Name" value="<?php if(isset($error)) { echo $_POST['username']; } ?>" tabindex="1">
+		<input type="text" name="username" id="username" class="form-control input-lg" placeholder="User Name" value="<?php if(isset($error)){ echo $_POST['username']; } ?>" tabindex="1">
 	</div>
 
 	<!-- email input -->
 	<div class="form-group">
-		<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" value="<?php if(isset($error)) { echo $_POST['email']; } ?>" tabindex="2">
+		<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" value="<?php if(isset($error)){ echo $_POST['email']; } ?>" tabindex="2">
 	</div>
 
 	<!-- password input -->

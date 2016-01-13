@@ -85,6 +85,8 @@ we were able to connect the php to the database, as well as creating a new regis
 
 someone suggested on the tutorial to use php's native functionality - let's see what that is about
 
+__
 
+currently back to index.php on loginReg :)
 
 
